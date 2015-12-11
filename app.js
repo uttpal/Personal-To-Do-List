@@ -37,6 +37,7 @@ app.use(flash());										// flash messsage in user session
 app.use(bodyParser.json()); 							// extract info from form
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(__dirname + '/'));
 app.set('view engine', 'ejs'); 									
 
 // auth requirements

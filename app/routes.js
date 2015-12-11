@@ -1,5 +1,5 @@
 // app/routes.js
-
+var todo         = require('../routes/todo.js'); //load routes
 module.exports = function(app, passport) {
 
     //homepage
@@ -53,14 +53,9 @@ module.exports = function(app, passport) {
             failureRedirect : '/'
         }));
 
-    //to-do app and login verification
-    app.get('/todo', ensureAuthenticated, function(req, res) {
-        res.render('todo.ejs', {
-            user : req.user                         //pass user info to template
-        });
-    });
+    
 
-    //google+ auth routes-------------------------------------------------------------------------
+    //google+ auth routes--------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------  
 
     app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
@@ -72,7 +67,14 @@ module.exports = function(app, passport) {
                     failureRedirect : '/'
             }));
 
-
+    //todo app routes------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------  
+    //to-do app and login verification
+    app.get(  '/todo',              ensureAuthenticated,        todo.home );
+    app.post( '/todo/create',       ensureAuthenticated,        todo.create );
+    app.get(  '/todo/destroy/:id',  ensureAuthenticated,        todo.destroy );
+    app.get(  '/todo/edit/:id',     ensureAuthenticated,        todo.edit );
+    app.post( '/todo/update/:id',   ensureAuthenticated,        todo.update );
     
 };
 

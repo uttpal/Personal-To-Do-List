@@ -63,8 +63,8 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
+                newUser.email    = email;
+                newUser.password = newUser.generateHash(password);
 
                 
                 newUser.save(function(err) {
@@ -93,7 +93,7 @@ module.exports = function(passport) {
     function(req, email, password, done) { 
 
         // find user with email requested
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ 'email' :  email }, function(err, user) {
             
             if (err)
                 return done(err);
@@ -132,7 +132,7 @@ module.exports = function(passport) {
         process.nextTick(function() {
 
             // find user from facebook id
-            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+            User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
 
                 if (err)
                     return done(err);
@@ -145,10 +145,10 @@ module.exports = function(passport) {
                     var newUser            = new User();
 
                     // set parameters in of user
-                    newUser.facebook.id    = profile.id;              
-                    newUser.facebook.token = token;             
-                    newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; 
-                    newUser.facebook.email = profile.emails[0].value;   // save first of multiple returned emails
+                              
+                                 
+                    newUser.name  = profile.name.givenName + ' ' + profile.name.familyName; 
+                    newUser.email = profile.emails[0].value;            // save first of multiple returned emails
 
                     // save user to DB
                     newUser.save(function(err) {
@@ -182,7 +182,7 @@ module.exports = function(passport) {
         process.nextTick(function() {
 
             // try to find the user based on their google id
-            User.findOne({ 'google.id' : profile.id }, function(err, user) {
+            User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
                 if (err)
                     return done(err);
 
@@ -195,10 +195,8 @@ module.exports = function(passport) {
                     var newUser          = new User();
 
                     // set all user params
-                    newUser.google.id    = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name  = profile.displayName;
-                    newUser.google.email = profile.emails[0].value; // pull the first email
+                    newUser.name  = profile.displayName;
+                    newUser.email = profile.emails[0].value; // pull the first email
 
                     // save the user
                     newUser.save(function(err) {
