@@ -16,15 +16,19 @@
     <div class="jumbotron text-center">
         <h1> Personal To-Do App</h1>
 <div id="list">
-  <form action="/todo/create" method="post" accept-charset="utf-8">
-    <div class="item-new">
-      <input class="input" type="text" name="content" />
-    </div>
-  </form>
+  <a href="/todo/new/" class="btn btn-primary">ADD</a> 
 
 <% todos.forEach( function ( todo ){ %>
   <div class="list-group-item">
-    <a class="update-link" href="/todo/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+  	
+  	<% if(todo.done!=0){ %>
+  		<del><%= todo.content %></del> 
+   		
+ 	<% } else{ %> 
+ 		<a href="/todo/done/<%= todo._id %>" class="btn btn-success">Close</a> 
+   		<a class="update-link" href="/todo/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+	<% } %>
+    
     <a href="/todo/destroy/<%= todo._id %>" class="btn btn-danger">Delete</a>
   </div>
 <% }); %>

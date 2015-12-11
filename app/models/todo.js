@@ -9,6 +9,7 @@ var todoSchema = mongoose.Schema({
     content     : String,
     done		: { type: Number, default: 0 },
     //location   : String,
+    due_time	: Date,
     updated_at  : Date
 
 });

@@ -20,12 +20,19 @@ exports.home = function ( req, res, next ){
     });
 };
 
+exports.new_task = function( req, res, next ){
+
+      res.render( 'create');
+    
+};
+
 //create new task
 exports.create = function ( req, res, next ){
   //takes user parameter and set it to new todo object 
   new Todo({
-      email 	 : req.user.email,
+      email 	   : req.user.email,
       content    : req.body.content,
+      due_time   : req.body.due,
       updated_at : Date.now()
   }).save( function ( err, todo, count ){     //saves new task to DB.
     if( err ) return next( err );
@@ -80,6 +87,7 @@ exports.update = function( req, res, next ){
       res.redirect( '/todo' );
     });
   });
+};
 
 //mark the closed task
 exports.done = function( req, res, next ){
