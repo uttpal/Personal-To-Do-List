@@ -23,7 +23,7 @@ module.exports = function(passport) {
         });
     });
 
-    // LOCAL SIGNUP ------------------------------------------------------------
+    // local signup ------------------------------------------------------------
     // -------------------------------------------------------------------------
 
     passport.use('local-signup', new LocalStrategy({
@@ -75,4 +75,38 @@ module.exports = function(passport) {
 
     }));
 
+    // local login ------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    
+
+    passport.use('local-login', new LocalStrategy({
+        
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true 
+    },
+    function(req, email, password, done) { 
+
+        // find user with email requested
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            
+            if (err)
+                return done(err);
+
+            // if no user is found, return the message
+            if (!user)
+                return done(null, false, req.flash('loginMessage', 'No such user found.')); 
+
+            // if password is wrong
+            if (!user.validatePassword(password))
+                return done(null, false, req.flash('loginMessage', 'Invalid Credentials')); // create the loginMessage and save it to session as flashdata
+
+            //else return user
+            return done(null, user);
+        });
+
+    }));
+
 };
+    
+

@@ -24,8 +24,6 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-   //validate login
-   // app.post('/login', passport);
 
     //to-do app and login verification
     app.get('/todo', ensureAuthenticated, function(req, res) {
@@ -34,11 +32,20 @@ module.exports = function(app, passport) {
         });
     });
 
+    //create new user
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/todo',                  //redirect to todo when success
         failureRedirect : '/signup',                //redirect to signup if failed
         failureFlash : true                         //allow flash messages
     }));
+
+    //validate login
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/todo',                  //redirect to todo when success
+        failureRedirect : '/login',                 //redirect to login if failed
+        failureFlash : true                         // allow flash messages
+    }));
+
 
     
 };
