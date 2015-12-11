@@ -7,6 +7,8 @@ module.exports = function(app, passport) {
         res.render('index.ejs'); 
     });
 
+    //local auth routes-------------------------------------------------------------------------
+    
     //login form
     app.get('/login', function(req, res) {
         res.render('login.ejs', { message: req.flash('Login to To-Do App') }); 
@@ -23,15 +25,6 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-
-
-    //to-do app and login verification
-    app.get('/todo', ensureAuthenticated, function(req, res) {
-        res.render('todo.ejs', {
-            user : req.user                         //pass user info to template
-        });
-    });
-
     //create new user
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/todo',                  //redirect to todo when success
@@ -45,6 +38,27 @@ module.exports = function(app, passport) {
         failureRedirect : '/login',                 //redirect to login if failed
         failureFlash : true                         // allow flash messages
     }));
+
+
+    //facebook auth routes-------------------------------------------------------------------------
+
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/todo',
+            failureRedirect : '/'
+        }));
+
+    //to-do app and login verification
+    app.get('/todo', ensureAuthenticated, function(req, res) {
+        res.render('todo.ejs', {
+            user : req.user                         //pass user info to template
+        });
+    });
+
+   
 
 
     

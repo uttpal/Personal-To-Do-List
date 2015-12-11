@@ -1,11 +1,15 @@
 // config/passport.js
 
 
-var LocalStrategy   = require('passport-local').Strategy;
+var LocalStrategy    = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+
 
 // get user model
-var User            = require('../app/models/user');
+var User             = require('../app/models/user');
 
+//get auth variables
+var configAuth       = require('./auth');
 
 module.exports = function(passport) {
 
@@ -103,6 +107,59 @@ module.exports = function(passport) {
 
             //else return user
             return done(null, user);
+        });
+
+    }));
+
+    // facebook login ------------------------------------------------------------
+    // -------------------------------------------------------------------------
+
+    passport.use(new FacebookStrategy({
+
+        // config sett. from auth.js
+        clientID        : configAuth.facebookAuth.clientID,
+        clientSecret    : configAuth.facebookAuth.clientSecret,
+        callbackURL     : configAuth.facebookAuth.callbackURL,
+        profileFields   : ['email']                                     //add to request email field from facebook
+
+    },
+
+    // Recive facebook tokens
+    function(token, refreshToken, profile, done) {
+
+        
+        process.nextTick(function() {
+
+            // find user from facebook id
+            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+                if (err)
+                    return done(err);
+
+                // if user found login
+                if (user) {
+                    return done(null, user);                            // user found, return that user
+                } else {
+                    // no user found!! create new
+                    var newUser            = new User();
+
+                    // set parameters in of user
+                    newUser.facebook.id    = profile.id;              
+                    newUser.facebook.token = token;             
+                    newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; 
+                    newUser.facebook.email = profile.emails[0].value;   // save first of multiple returned emails
+
+                    // save user to DB
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        // if successful, return the new user
+                        return done(null, newUser);
+                    });
+                }
+
+            });
         });
 
     }));
