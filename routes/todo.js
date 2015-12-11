@@ -66,3 +66,20 @@ exports.edit = function( req, res, next ){
     });
 };
 
+//called by edit page to edit existing task
+exports.update = function( req, res, next ){
+  Todo.findById( req.params.id, function ( err, todo ){
+
+    //set task to new user content
+    todo.content    = req.body.content;
+
+    //save to DB
+    todo.save( function ( err, todo, count ){
+      if( err ) return next( err );
+
+      res.redirect( '/todo' );
+    });
+  });
+
+
+
