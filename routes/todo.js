@@ -49,3 +49,20 @@ exports.destroy = function ( req, res, next ){
   });
 };
 
+
+//loads page to edit task
+exports.edit = function( req, res, next ){
+
+  Todo.
+    find({ email : req.user.email }).
+    sort( '-updated_at' ).
+    exec( function ( err, todos ){
+      if( err ) return next( err );
+
+      res.render( 'edit', {
+        todos   : todos,
+        current : req.params.id
+      });
+    });
+};
+
