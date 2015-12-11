@@ -81,5 +81,18 @@ exports.update = function( req, res, next ){
     });
   });
 
+//mark the closed task
+exports.done = function( req, res, next ){
+  Todo.findById( req.params.id, function ( err, todo ){
 
+    //set to 1 to identify colsed 
+    todo.done    = 1;
+    //save to DB
+    todo.save( function ( err, todo, count ){
+      if( err ) return next( err );
+
+      res.redirect( '/todo' );
+    });
+  });
+};
 
