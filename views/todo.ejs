@@ -1,0 +1,35 @@
+<!-- views/todo.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Very Own To-Do App</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    
+    <style>
+        body        { padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text-center">
+        <h1> Personal To-Do App</h1>
+<div id="list">
+  <form action="/todo/create" method="post" accept-charset="utf-8">
+    <div class="item-new">
+      <input class="input" type="text" name="content" />
+    </div>
+  </form>
+
+<% todos.forEach( function ( todo ){ %>
+  <div class="list-group-item">
+    <a class="update-link" href="/todo/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+    <a href="/todo/destroy/<%= todo._id %>" class="btn btn-danger">Delete</a>
+  </div>
+<% }); %>
+</div>
+</div>
+</body>
+</html>
+
