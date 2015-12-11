@@ -8,6 +8,7 @@ module.exports = function(app, passport) {
     });
 
     //local auth routes-------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------
     
     //login form
     app.get('/login', function(req, res) {
@@ -41,6 +42,7 @@ module.exports = function(app, passport) {
 
 
     //facebook auth routes-------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------
 
     app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
@@ -58,7 +60,17 @@ module.exports = function(app, passport) {
         });
     });
 
-   
+    //google+ auth routes-------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------  
+
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+                    successRedirect : '/todo',
+                    failureRedirect : '/'
+            }));
 
 
     
