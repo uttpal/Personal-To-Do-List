@@ -2,7 +2,7 @@
 
 //load user mongoose model
 var Todo = require('../app/models/todo.js');
-
+require('../cron/mailer.js');
 //todo app homepage
 exports.home = function ( req, res, next ){
 
@@ -17,7 +17,6 @@ exports.home = function ( req, res, next ){
           todos[i].due_time = +((Number) ((( todos[i].due_time - (new Date()).getTime())/ (1000*60*60)).toFixed(2)));
       }
       
-      console.log("im in",todos); 
       res.render( 'todo', {
           todos : todos
       });
@@ -40,9 +39,9 @@ exports.create = function ( req, res, next ){
       email 	   : req.user.email,
       content    : req.body.content,
       due_time   : (new Date(req.body.due)).getTime(),     //get millisecs from date
-      location   : req.body.location,
+      location   : (req.body.location.split(','))[0],      //get street address from location
       updated_at : Date.now()
-  }).save( function ( err, todo, count ){     //saves new task to DB.
+  }).save( function ( err, todo, count ){                  //saves new task to DB
     if( err ) return next( err );
 
     res.redirect( '/todo' );
