@@ -73,7 +73,7 @@ module.exports = function(app, passport) {
     app.get(  '/todo',              ensureAuthenticated,        todo.home );
     app.post( '/todo/create',       ensureAuthenticated,        todo.create );
     app.get(  '/todo/destroy/:id',  ensureAuthenticated,        todo.destroy );
-    app.get(  '/todo/edit/:id',     ensureAuthenticated,        todo.edit );
+    app.get(  '/todo/push/:id',     ensureAuthenticated,        todo.push );
     app.post( '/todo/update/:id',   ensureAuthenticated,        todo.update );
     app.get( '/todo/done/:id',      ensureAuthenticated,        todo.done );
     app.get( '/todo/new/',          ensureAuthenticated,        todo.new_task );

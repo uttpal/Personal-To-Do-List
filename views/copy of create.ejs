@@ -13,14 +13,60 @@
   
     <style>
         body        { padding-top:80px; }
-        .row > *{
-    margin-left:auto;
-    margin-right:auto;
-    
-    float: none;
-    }
     </style>
-    
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <style>
+      #locationField, #controls {
+        position: relative;
+        width: 480px;
+      }
+      #autocomplete {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 99%;
+      }
+      .label {
+        text-align: right;
+        font-weight: bold;
+        width: 100px;
+        color: #303030;
+      }
+      #address {
+        border: 1px solid #000090;
+        background-color: #f0f0ff;
+        width: 480px;
+        padding-right: 2px;
+      }
+      #address td {
+        font-size: 10pt;
+      }
+      .field {
+        width: 99%;
+      }
+      .slimField {
+        width: 80px;
+      }
+      .wideField {
+        width: 200px;
+      }
+      #locationField {
+        height: 20px;
+        margin-bottom: 2px;
+      }
+    </style>
   </head>
 
   <body>
@@ -34,10 +80,10 @@
 <div id="list">
   <form method = "post">
     <div class="item-new">
-      <input class="input" placeholder="Enter Task To-Do" type="text" name="content" />
+      <input class="input" type="text" name="content" />
     </div>
     <div class="row">
-        <div class='col-sm-3'>
+        <div class='col-sm-6'>
             <div class="form-group">
                 <div class='input-group date' id='datetimepicker1'>
                     <input type='text' class="form-control" name="due" />
@@ -52,15 +98,15 @@
                 $('#datetimepicker1').datetimepicker();
             });
         </script>
-    </div>
+
     <div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
              onFocus="geolocate()"name="location" type="text"></input>
     </div>
-      <button type="submit" class="btn btn-success" formaction="/todo/create" method="post">Submit</button>
+      <button type="submit" formaction="/todo/create" method="post">Submit</button>
   </form>
     
-
+    </div>
     
     <script>
 // This example displays an address form, using the autocomplete feature
