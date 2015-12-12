@@ -8,8 +8,8 @@ var todoSchema = mongoose.Schema({
     email    	: String,
     content     : String,
     done		: { type: Number, default: 0 },
-    //location   : String,
-    due_time	: Date,
+    location    : String,
+    due_time	: { type: Number, default: 24 },
     updated_at  : Date
 
 });

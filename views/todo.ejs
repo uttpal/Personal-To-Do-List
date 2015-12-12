@@ -25,8 +25,9 @@
   		<del><%= todo.content %></del> 
    		
  	<% } else{ %> 
- 		<a href="/todo/done/<%= todo._id %>" class="btn btn-success">Close</a> 
-   		<a class="update-link" href="/todo/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+ 		
+   		<a class="update-link" href="/todo/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a><%= todo.due_time %><%= todo.location %>
+   		<a href="/todo/done/<%= todo._id %>" class="btn btn-success">Close</a> 
 	<% } %>
     
     <a href="/todo/destroy/<%= todo._id %>" class="btn btn-danger">Delete</a>

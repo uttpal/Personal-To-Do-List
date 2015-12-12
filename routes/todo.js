@@ -13,7 +13,11 @@ exports.home = function ( req, res, next ){
     sort( '-updated_at' ).
     exec( function ( err, todos ){
       if( err ) return next( err );
-
+      for (i = 0; i < todos.length; i++) {
+          todos[i].due_time = +((Number) ((( todos[i].due_time - (new Date()).getTime())/ (1000*60*60)).toFixed(2)));
+      }
+      
+      console.log("im in",todos); 
       res.render( 'todo', {
           todos : todos
       });
@@ -29,11 +33,14 @@ exports.new_task = function( req, res, next ){
 //create new task
 exports.create = function ( req, res, next ){
   //takes user parameter and set it to new todo object 
-  console.log("im in",req.body);
+  
+  //get due date from user substract from current time and convert millisecs to hours 
+
   new Todo({
       email 	   : req.user.email,
       content    : req.body.content,
-      due_time   : req.body.due,
+      due_time   : (new Date(req.body.due)).getTime(),     //get millisecs from date
+      location   : req.body.location,
       updated_at : Date.now()
   }).save( function ( err, todo, count ){     //saves new task to DB.
     if( err ) return next( err );
