@@ -29,6 +29,7 @@ exports.new_task = function( req, res, next ){
 //create new task
 exports.create = function ( req, res, next ){
   //takes user parameter and set it to new todo object 
+  console.log("im in",req.body);
   new Todo({
       email 	   : req.user.email,
       content    : req.body.content,
